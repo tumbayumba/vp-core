@@ -1,1 +1,1 @@
-# vp-core
+# vp2-core
