@@ -7,7 +7,7 @@ use App\Core\Contracts\Constructor\Operation;
 interface Operable
 {
     public function setOperation(Operation $operation): self;
-    public function getOperation(mixed $id): Operation;
+    public function getOperation(mixed $id): ?Operation;
     public function removeOperation(mixed $id): self;
 
 }
