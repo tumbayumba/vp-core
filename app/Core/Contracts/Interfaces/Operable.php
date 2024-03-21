@@ -9,5 +9,9 @@ interface Operable
     public function setOperation(Operation $operation): self;
     public function getOperation(mixed $id): ?Operation;
     public function removeOperation(mixed $id): self;
+    /**
+     * @return Operation[]
+     */
+    public function getOperations(): array;
 
 }

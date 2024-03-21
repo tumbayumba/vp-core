@@ -17,11 +17,6 @@ abstract class Detail extends ConstructorObject  implements ConstructorComposite
      */
     private array $items = [];
 
-    /**
-     * @return Operation[]
-     */
-    private array $operations = [];
-
     private ValidatorManagerInterface $validatorManager;
 
     public function __construct()
@@ -54,16 +49,15 @@ abstract class Detail extends ConstructorObject  implements ConstructorComposite
 
     public function setOperation(Operation $operation): self
     {
-
-        return $this;
+        return $this->attach($operation);
     }
 
     public function getOperation(mixed $id): ?Operation
     {
-        if (!empty($this->operations)) {
-            foreach ($this->operations as $operation) {
-                if ($operation->getId() === $id) {
-                    return $operation;
+        if (!empty($this->items)) {
+            foreach ($this->items as $item) {
+                if ($item->getType() === ConstructorObjectType::OPERATION && $item->getId() === $id) {
+                    return $item;
                 }
             }
         }
@@ -73,16 +67,30 @@ abstract class Detail extends ConstructorObject  implements ConstructorComposite
 
     public function removeOperation(mixed $id): self
     {
-        if (!empty($this->operations)) {
-            foreach ($this->operations as $key => $operation) {
-                if ($operation->getId() === $id) {
-                    unset($this->operations[$key]);
+        if (!empty($this->items)) {
+            foreach ($this->items as $key => $item) {
+                if ($item->getType() === ConstructorObjectType::OPERATION && $item->getId() === $id) {
+                    unset($this->items[$key]);
                     break;
                 }
             }
         }
 
         return $this;
+    }
+
+    public function getOperations(): array
+    {
+        $operations = [];
+        if (!empty($this->items)) {
+            foreach ($this->items as $key => $item) {
+                if ($item->getType() === ConstructorObjectType::OPERATION) {
+                    $operations[] = $item;
+                }
+            }
+        }
+
+        return $operations;
     }
 
     public function setValidatorManager(ValidatorManagerInterface $manager): self
